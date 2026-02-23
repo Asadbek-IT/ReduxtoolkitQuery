@@ -1,24 +1,39 @@
-import React from 'react'
-import { useGetPostQuery } from './app/api/api'
+import React from "react";
+import { useDeletePostMutation, useGetPostQuery } from "./app/api/api";
 
 const App = () => {
-  const {data, isLoading, isError, isSuccess, refetch} = useGetPostQuery();
+  const { data, isLoading, isError, isSuccess, refetch } = useGetPostQuery();
 
-  if(isLoading) return <h1>Loading...</h1>
+  const [deletePost, ] = useDeletePostMutation();
 
-  if(isError) return <h1>Some error accured</h1>
+  if (isLoading) return <h1>Loading...</h1>;
 
-  if(isSuccess)
-  return (
-    <div>
-      <h1>Success</h1>
-      {
-        data.map((item, index) =>(
-          <h1 key={index}>{item.name}</h1>
-        ))
-      }
-    </div>
-  )
-}
+  if (isError) return <h1>Some error accured</h1>;
 
-export default App
+  if (isSuccess)
+    return (
+      <div >
+        {data.map((item, index) => (
+          <div key={item.id} className="Main">
+            <h3>{item.name}</h3>
+            <p>{item.email}</p>
+
+            <div>
+              <button
+              onClick={() => {
+                 alert("Success edit");
+                }}>Edit</button>
+              <button
+                onClick={() => {
+                  deletePost(item.id), alert("Success delete");
+                }}>
+                Delete
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+};
+
+export default App;
